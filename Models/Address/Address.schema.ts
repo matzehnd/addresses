@@ -1,8 +1,7 @@
 import { Bson } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
-import { db } from "../db.ts";
+import { BaseSchema } from "../Base.schema.ts";
 
-interface AddressSchema {
-  _id: Bson.ObjectId;
+export interface AddressSchema extends BaseSchema {
   number?: string;
   street?: string;
   streetSuffix?: string;
@@ -13,7 +12,3 @@ interface AddressSchema {
   latitude?: number;
   longitude?: number;
 }
-
-const addresses = db.collection<AddressSchema>("addresses");
-
-export { addresses };
