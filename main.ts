@@ -1,7 +1,10 @@
 import { Application } from "https://deno.land/x/oak@v10.0.0/mod.ts";
+import { handleError } from "./Middlewares/errorHandling.ts";
 import { router } from "./routes.ts";
 
 const app = new Application();
+
+app.use(handleError);
 
 app.use(router.routes());
 
