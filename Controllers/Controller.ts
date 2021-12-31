@@ -8,7 +8,9 @@ export class Controller<T, S extends Body> {
     private useCase: UseCase<T, S>,
     private permissions: any[] = [],
     private validator: (request: Request) => Promise<T>
-  ) {}
+  ) {
+    this.handle = this.handle.bind(this);
+  }
 
   public async handle(ctx: Context) {
     const body = await this.validator(ctx.request);

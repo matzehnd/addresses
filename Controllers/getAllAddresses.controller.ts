@@ -4,5 +4,6 @@ import { Controller } from "./Controller.ts";
 
 const usecase = new GetAll(addressCollection);
 
-export const getAllAddresses = new Controller(usecase, [], async () => {})
-  .handle;
+const getAllAddresses = new Controller(usecase, [], async () => {});
+
+export { getAllAddresses };

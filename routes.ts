@@ -4,4 +4,4 @@ import { insertAnAddress } from "./Controllers/insertAnAddress.ts";
 
 export const router = new Router();
 
-router.get("/", getAllAddresses).post("/", insertAnAddress);
+router.get("/", getAllAddresses.handle).post("/", insertAnAddress.handle);

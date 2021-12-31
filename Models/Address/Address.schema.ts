@@ -1,4 +1,3 @@
-import { Bson } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
 import { BaseSchema } from "../Base.schema.ts";
 
 export interface AddressSchema extends BaseSchema {

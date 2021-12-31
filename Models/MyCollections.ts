@@ -8,7 +8,5 @@ export abstract class MyCollection<T extends BaseSchema> {
     id: Bson.ObjectId
   ): T | undefined | Promise<T | undefined>;
 
-  public abstract insertOne(
-    entity: T
-  ): Promise<Bson.ObjectId | Required<T>["_id"]>;
+  public abstract insertOne(entity: T): Promise<T>;
 }
