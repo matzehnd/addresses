@@ -32,4 +32,17 @@ export class MongoCollection<T> extends MyCollection<T> {
 
     throw new HttpError(500, "inserted Id is not Bson.ObjectId");
   }
+
+  public async updateOne(id: Bson.ObjectId, entity: T) {
+    const res = await this.mongoDbCollection.updateOne({ _id: id }, entity);
+    if (res instanceof Bson.ObjectId) {
+      const insertedDoc = await this.getById(res);
+      if (!insertedDoc) {
+        throw new HttpError(500, "updated Doc not found");
+      }
+      return insertedDoc;
+    }
+
+    throw new HttpError(500, "updated Id is not Bson.ObjectId");
+  }
 }

@@ -9,4 +9,6 @@ export abstract class MyCollection<T extends BaseSchema> {
   ): T | undefined | Promise<T | undefined>;
 
   public abstract insertOne(entity: T): Promise<T>;
+
+  public abstract updateOne(id: Bson.ObjectId, entity: T): Promise<T>;
 }
