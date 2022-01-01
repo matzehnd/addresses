@@ -1,21 +1,36 @@
 import { UseCase } from "./../UseCases/UseCase.ts";
-import { Context } from "https://deno.land/x/oak@v10.0.0/context.ts";
 import { Request } from "https://deno.land/x/oak@v10.0.0/request.ts";
 import { Body } from "../body.ts";
+import { Context } from "https://deno.land/x/oak@v10.0.0/context.ts";
+import {
+  RouterContext,
+  RouteParams,
+} from "https://deno.land/x/oak@v10.0.0/router.ts";
 
-export class Controller<T, S extends Body> {
+export class Controller<
+  T,
+  S extends Body,
+  R extends string,
+  B extends { [index: string]: any }
+> {
   constructor(
-    private useCase: UseCase<T, S>,
+    public route: R,
+    private useCase: UseCase<T & B, S>,
     private permissions: any[] = [],
-    private validator: (request: Request) => Promise<T>
+    private validator: (request: Request) => Promise<T>,
+    private paramGetter: (params: RouteParams<R>) => Promise<B>
   ) {
     this.handle = this.handle.bind(this);
   }
 
-  public async handle(ctx: Context) {
+  public async handle<P extends RouteParams<R> = RouteParams<R>>(
+    ctx: RouterContext<R, P>
+  ) {
+    const params = await this.paramGetter(ctx.params);
+
     const body = await this.validator(ctx.request);
     await this.checkPermissons(body);
-    const res = await this.useCase.execute(body);
+    const res = await this.useCase.execute({ ...body, ...params });
     this.prepareResponse(ctx, res);
   }
 

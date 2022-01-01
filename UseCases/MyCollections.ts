@@ -1,5 +1,5 @@
 import { Bson, InsertDocument } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
-import { BaseSchema } from "./Base.schema.ts";
+import { BaseSchema } from "../Models/Base.schema.ts";
 
 export abstract class MyCollection<T extends BaseSchema> {
   public abstract getAll(): T[] | Promise<T[]>;

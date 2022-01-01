@@ -1,4 +1,4 @@
-import { MyCollection } from "../Models/MyCollections.ts";
+import { MyCollection } from "../UseCases/MyCollections.ts";
 import { Collection, Bson } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
 import { HttpError } from "./../Middlewares/HttpError.ts";
 
