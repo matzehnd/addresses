@@ -7,6 +7,7 @@ export class UpdateOne implements UseCase<AddressSchema, AddressSchema> {
   constructor(private addressRpository: MyCollection<AddressSchema>) {}
 
   public async execute(address: AddressSchema & { id: Bson.ObjectId }) {
-    return this.addressRpository.updateOne(address.id, address);
+    const { id, ...rest } = address;
+    return this.addressRpository.updateOne(id, rest);
   }
 }

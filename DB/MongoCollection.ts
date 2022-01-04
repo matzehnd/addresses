@@ -36,15 +36,12 @@ export class MongoCollection<T> extends MyCollection<T> {
 
   public async updateOne(id: Bson.ObjectId, entity: Partial<T>) {
     const update = getUpdatDoc(entity);
-    const res = await this.mongoDbCollection.updateOne({ _id: id }, update);
-    if (res instanceof Bson.ObjectId) {
-      const insertedDoc = await this.getById(res);
-      if (!insertedDoc) {
-        throw new HttpError(500, "updated Doc not found");
-      }
-      return insertedDoc;
-    }
+    await this.mongoDbCollection.updateOne({ _id: id }, update);
 
-    throw new HttpError(500, "updated Id is not Bson.ObjectId");
+    const insertedDoc = await this.getById(id);
+    if (!insertedDoc) {
+      throw new HttpError(500, "updated Doc not found");
+    }
+    return insertedDoc;
   }
 }
