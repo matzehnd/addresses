@@ -1,6 +1,7 @@
 import { MyCollection } from "../UseCases/MyCollections.ts";
 import { Collection, Bson } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
 import { HttpError } from "./../Middlewares/HttpError.ts";
+import { getUpdatDoc } from "./helpers/getUpdateDoc.ts";
 
 export class MongoCollection<T> extends MyCollection<T> {
   constructor(private mongoDbCollection: Collection<T>) {
@@ -33,8 +34,9 @@ export class MongoCollection<T> extends MyCollection<T> {
     throw new HttpError(500, "inserted Id is not Bson.ObjectId");
   }
 
-  public async updateOne(id: Bson.ObjectId, entity: T) {
-    const res = await this.mongoDbCollection.updateOne({ _id: id }, entity);
+  public async updateOne(id: Bson.ObjectId, entity: Partial<T>) {
+    const update = getUpdatDoc(entity);
+    const res = await this.mongoDbCollection.updateOne({ _id: id }, update);
     if (res instanceof Bson.ObjectId) {
       const insertedDoc = await this.getById(res);
       if (!insertedDoc) {
